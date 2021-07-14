@@ -1,5 +1,6 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import SpeedSvg from '../../assets/speed.svg'
 import AccelerationSvg from '../../assets/acceleration.svg'
@@ -31,6 +32,12 @@ import { Accessory } from '../../components/Accessory'
 import { Button } from '../../components/Button'
 
 export function CarDetails() {
+  const navigation = useNavigation()
+
+  function handleConfirmRental() {
+    navigation.navigate('Scheduling')
+  }
+
   return (
     <Container>
       <StatusBar
@@ -40,7 +47,7 @@ export function CarDetails() {
       />
 
       <Header>
-        <BackButton onPress={() => {}} />
+        <BackButton onPress={() => navigation.goBack()} />
       </Header>
 
       <CarImages>
@@ -76,7 +83,10 @@ export function CarDetails() {
       </Content>
 
       <Footer>
-        <Button title="Escolher período do aluguel" />
+        <Button
+          title="Escolher período do aluguel"
+          onPress={handleConfirmRental}
+        />
       </Footer>
     </Container>
   )
