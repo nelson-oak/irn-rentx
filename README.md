@@ -35,4 +35,4 @@ yarn server
 
 ### Configurações adicionais
 
-- Trocar o IP no script server do package.json, pelo IP da máquina local que está executando a FakeAPI
+- Trocar o IP no script server do package.json e no arquivo *./src/services/api.ts*; pelo IP da máquina local que está executando a FakeAPI
