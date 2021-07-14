@@ -26,3 +26,13 @@ expo start
 ```
 
 * Para executar a aplicação, basta instalar o cliente Expo no celular e escanear o QRCode que aparece no terminal e na página exibida pelo comando *expo start*
+
+### Comando para executar a FakeAPI
+
+```bash
+yarn server
+```
+
+### Configurações adicionais
+
+- Trocar o IP no script server do package.json, pelo IP da máquina local que está executando a FakeAPI
