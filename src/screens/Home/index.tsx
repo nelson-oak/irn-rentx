@@ -44,8 +44,6 @@ export function Home() {
     fetchCars()
   }, [])
 
-  useEffect(() => console.log(cars, cars[0]), [cars])
-
   return (
     <Container>
       <StatusBar

@@ -30,7 +30,7 @@ interface IRentalPeriod {
   endFormatted: string
 }
 
-interface ICarDetailsParams {
+interface ISchedulingParams {
   car: ICarDTO;
 }
 
@@ -42,7 +42,7 @@ export function Scheduling() {
   const theme = useTheme()
   const navigation = useNavigation()
   const route = useRoute()
-  const { car } = route.params as ICarDetailsParams
+  const { car } = route.params as ISchedulingParams
 
   function handleConfirmRental() {
     if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
