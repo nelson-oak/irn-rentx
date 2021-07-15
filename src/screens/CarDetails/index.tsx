@@ -2,14 +2,8 @@ import React from 'react'
 import { StatusBar } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-import SpeedSvg from '../../assets/speed.svg'
-import AccelerationSvg from '../../assets/acceleration.svg'
-import ForceSvg from '../../assets/force.svg'
-import GasolineSvg from '../../assets/gasoline.svg'
-import ExchangeSvg from '../../assets/exchange.svg'
-import PeopleSvg from '../../assets/people.svg'
-
 import { ICarDTO } from '../../dtos/ICarDTO'
+import { getAccessoryIcon } from '../../utils/getAccessoryIcon'
 
 import {
   Container,
@@ -85,7 +79,7 @@ export function CarDetails() {
               <Accessory
                 key={accessory.type}
                 name={accessory.name}
-                icon={SpeedSvg}
+                icon={getAccessoryIcon(accessory.type)}
               />
             ))
           }
