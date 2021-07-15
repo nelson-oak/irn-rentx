@@ -9,16 +9,20 @@ import {
 interface IButtonProps extends RectButtonProps {
   title: string
   color?: string
+  enabled?: boolean
 }
 
 export function Button({
   title,
   color,
+  enabled = true,
   ...rest
 }: IButtonProps) {
   return (
     <Container
       color={color}
+      enabled={enabled}
+      style={{ opacity: enabled ? 1 : .5 }}
       {...rest}
     >
       <Title>{title}</Title>
