@@ -24,8 +24,8 @@ export function Home() {
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation()
 
-  function handleSelectCar() {
-    navigation.navigate('CarDetails')
+  function handleSelectCar(car: ICarDTO) {
+    navigation.navigate('CarDetails', { car })
   }
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export function Home() {
           data={cars}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <Car car={item} onPress={handleSelectCar} />
+            <Car car={item} onPress={() => handleSelectCar(item)} />
           )}
         />
       }

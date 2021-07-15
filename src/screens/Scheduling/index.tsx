@@ -29,6 +29,10 @@ export function Scheduling() {
     navigation.navigate('SchedulingDetails')
   }
 
+  function handleGoBack() {
+    navigation.goBack()
+  }
+
   return (
     <Container>
       <StatusBar
@@ -40,7 +44,7 @@ export function Scheduling() {
       <Header>
         <BackButton
           color={theme.colors.shape}
-          onPress={() => navigation.goBack()}
+          onPress={handleGoBack}
         />
 
         <Title>
