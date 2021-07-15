@@ -98,7 +98,7 @@ export function Scheduling() {
         <Title>
           Escolha uma {'\n'}
           data de início e {'\n'}
-          fim do aluguel
+          fim do aluguel.
         </Title>
 
         <RentalPeriod>
