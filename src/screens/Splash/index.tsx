@@ -1,13 +1,14 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { useNavigation } from '@react-navigation/core'
 import { StatusBar } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-  Easing,
   interpolate,
-  Extrapolate
+  Extrapolate,
+  runOnJS
 } from 'react-native-reanimated'
 
 import BrandSvg from '../../assets/brand.svg'
@@ -18,6 +19,8 @@ import {
 } from './styles'
 
 export function Splash() {
+  const navigation = useNavigation()
+
   const splashAnimation = useSharedValue(0)
 
   // Animação original
@@ -84,10 +87,18 @@ export function Splash() {
     }
   })
 
+  function startApp() {
+    navigation.navigate('Home')
+  }
+
   useEffect(() => {
     splashAnimation.value = withTiming(
       50,
-      { duration: 5000 }
+      { duration: 1000 },
+      () => {
+        'worklet'
+        runOnJS(startApp)()
+      }
     )
   }, [])
 
