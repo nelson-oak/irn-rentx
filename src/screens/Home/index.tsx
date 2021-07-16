@@ -19,7 +19,7 @@ import { api } from '../../services/api'
 import { ICarDTO } from '../../dtos/ICarDTO'
 
 import { Car } from '../../components/Car'
-import { Load } from '../../components/Load'
+import { LoadAnimation } from '../../components/LoadAnimation'
 
 import {
   Container,
@@ -116,7 +116,7 @@ export function Home() {
 
       {
         loading
-        ? <Load />
+        ? <LoadAnimation />
         : <CarList
           data={cars}
           keyExtractor={item => item.id}

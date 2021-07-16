@@ -25,7 +25,7 @@ import {
 
 import { BackButton } from '../../components/BackButton'
 import { Car } from '../../components/Car'
-import { Load } from '../../components/Load'
+import { LoadAnimation } from '../../components/LoadAnimation'
 
 export function MyCars() {
   const [cars, setCars] = useState<ICarByUserDTO[]>([])
@@ -80,7 +80,7 @@ export function MyCars() {
 
       {
         loading
-        ? <Load />
+        ? <LoadAnimation />
         : (
           <Content>
             <Appointments>
