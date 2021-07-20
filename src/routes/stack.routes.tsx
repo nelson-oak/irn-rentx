@@ -6,6 +6,7 @@ const { Navigator, Screen } = createStackNavigator()
 
 import { Splash } from '../screens/Splash'
 import { Home } from '../screens/Home'
+import { SignIn } from '../screens/SignIn'
 import { CarDetails } from '../screens/CarDetails'
 import { Scheduling } from '../screens/Scheduling'
 import { SchedulingDetails } from '../screens/SchedulingDetails'
@@ -14,7 +15,7 @@ import { MyCars } from '../screens/MyCars'
 
 export function StackRoutes() {
   return (
-    <Navigator headerMode="none" initialRouteName="Splash">
+    <Navigator headerMode="none" initialRouteName="SignIn">
       <Screen
         name="Splash"
         component={Splash}
@@ -26,6 +27,11 @@ export function StackRoutes() {
         options={{
           gestureEnabled: false
         }}
+      />
+
+      <Screen
+        name="SignIn"
+        component={SignIn}
       />
 
       <Screen
