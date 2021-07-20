@@ -5,6 +5,8 @@ import { Feather } from '@expo/vector-icons'
 
 import {
   Container,
+  IconContainer,
+  InputText
 } from './styles'
 
 interface IInputProps extends TextInputProps {
@@ -19,11 +21,15 @@ export function Input({
 
   return (
     <Container>
-      <Feather
-        name={iconName}
-        size={24}
-        color={theme.colors.text_details}
-      />
+      <IconContainer>
+        <Feather
+          name={iconName}
+          size={24}
+          color={theme.colors.text_details}
+        />
+      </IconContainer>
+
+      <InputText {...rest} />
     </Container>
   )
 }
