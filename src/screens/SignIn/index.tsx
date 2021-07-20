@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components'
 
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+import { PasswordInput } from '../../components/PasswordInput'
 
 import {
   Container,
@@ -45,7 +46,7 @@ export function SignIn() {
           autoCapitalize="none"
         />
 
-        <Input
+        <PasswordInput
           iconName="lock"
           placeholder="Senha"
           autoCorrect={false}
@@ -69,7 +70,6 @@ export function SignIn() {
           onPress={() => {}}
           enabled={false}
           loading={false}
-          style={{ marginTop: 8 }}
         />
       </Footer>
     </Container>
