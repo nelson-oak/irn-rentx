@@ -4,6 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 
 export const Container = styled.View`
   padding: 0 24px;
+  height: 100%;
   background-color: ${({ theme }) => theme.colors.background_primary};
 `
 
