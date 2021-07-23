@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   StatusBar,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native'
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation, useRoute } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 
 import { BackButton } from '../../../components/BackButton'
@@ -23,12 +24,36 @@ import {
   FormTitle
 } from './styles'
 
+interface ISignUpSecondStepParams {
+  user: {
+    name: string
+    email: string
+    driverLicense: string
+  }
+}
+
 export function SignUpSecondStep() {
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+
   const theme = useTheme()
   const navigation = useNavigation()
+  const route = useRoute()
+
+  const { user } = route.params as ISignUpSecondStepParams
   
   function handleGoBack() {
     navigation.goBack()
+  }
+
+  async function handleRegister() {
+    if (!password) {
+      return Alert.alert('Opa', 'Senha obrigatória')
+    }
+
+    if (password !== passwordConfirmation) {
+      return Alert.alert('Opa', 'Senhas não são iguais')
+    }
   }
 
   return (
@@ -69,17 +94,22 @@ export function SignUpSecondStep() {
             <PasswordInput
               iconName="lock"
               placeholder="Senha"
+              value={password}
+              onChangeText={setPassword}
             />
 
             <PasswordInput
               iconName="lock"
               placeholder="Repetir Senha"
+              value={passwordConfirmation}
+              onChangeText={setPasswordConfirmation}
             />
           </Form>
 
           <Button
             title="Cadastrar"
             color={theme.colors.success}
+            onPress={handleRegister}
           />
         </Container>
       </TouchableWithoutFeedback>
