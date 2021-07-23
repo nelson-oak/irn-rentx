@@ -12,7 +12,6 @@ interface IButtonProps extends RectButtonProps {
   title: string
   color?: string
   light?: boolean
-  enabled?: boolean
   loading?: boolean
 }
 
