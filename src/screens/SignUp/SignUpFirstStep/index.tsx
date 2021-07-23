@@ -1,5 +1,10 @@
 import React from 'react'
-import { StatusBar } from 'react-native'
+import {
+  StatusBar,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 
@@ -15,6 +20,8 @@ import {
   Form,
   FormTitle
 } from './styles'
+import { Input } from '../../../components/Input'
+import { Button } from '../../../components/Button'
 
 export function SignUpFirstStep() {
   const theme = useTheme()
@@ -25,35 +32,61 @@ export function SignUpFirstStep() {
   }
 
   return (
-    <Container>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={theme.colors.background_primary}
-        translucent
-      />
-      
-      <Header>
-        <BackButton onPress={handleGoBack} />
+    <KeyboardAvoidingView
+      behavior="position"
+      enabled
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Container>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor={theme.colors.background_primary}
+            translucent
+          />
+          
+          <Header>
+            <BackButton onPress={handleGoBack} />
 
-        <Steps>
-          <Bullet active />
-          <Bullet />
-        </Steps>
-      </Header>
+            <Steps>
+              <Bullet active />
+              <Bullet />
+            </Steps>
+          </Header>
 
-      <Title>
-        Crie sua {'\n'}
-        conta
-      </Title>
+          <Title>
+            Crie sua {'\n'}
+            conta
+          </Title>
 
-      <Subtitle>
-        Faça seu cadastro de {'\n'}
-        forma rápida e fácil
-      </Subtitle>
+          <Subtitle>
+            Faça seu cadastro de {'\n'}
+            forma rápida e fácil
+          </Subtitle>
 
-      <Form>
-        <FormTitle>1. Dados</FormTitle>
-      </Form>
-    </Container>
+          <Form>
+            <FormTitle>1. Dados</FormTitle>
+
+            <Input
+              iconName="user"
+              placeholder="Nome"
+            />
+
+            <Input
+              iconName="mail"
+              placeholder="E-mail"
+            />
+
+            <Input
+              iconName="credit-card"
+              placeholder="CNH"
+            />
+          </Form>
+
+          <Button
+            title="Próximo"
+          />
+        </Container>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   )
 }
