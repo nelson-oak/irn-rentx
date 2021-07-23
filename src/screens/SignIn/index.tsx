@@ -6,6 +6,7 @@ import {
   Keyboard,
   Alert
 } from 'react-native'
+import { useNavigation } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
 
@@ -26,6 +27,7 @@ export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const navigation = useNavigation()
   const theme = useTheme()
 
   async function handleSignIn() {
@@ -50,6 +52,10 @@ export function SignIn() {
 
       return Alert.alert('Erro na autenticação', 'Ocorreu um erro ao fazer login, verifica as credenciais')
     }
+  }
+
+  function handleNewAccout() {
+    navigation.navigate('SignUpFirstStep')
   }
 
   return (
@@ -109,9 +115,9 @@ export function SignIn() {
             <Button
               title="Criar conta gratuita"
               color={theme.colors.background_secondary}
-              onPress={() => {}}
+              onPress={handleNewAccout}
               light
-              enabled={false}
+              enabled={true}
               loading={false}
             />
           </Footer>

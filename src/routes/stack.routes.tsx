@@ -5,8 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 const { Navigator, Screen } = createStackNavigator()
 
 import { Splash } from '../screens/Splash'
-import { Home } from '../screens/Home'
 import { SignIn } from '../screens/SignIn'
+import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep'
+import { Home } from '../screens/Home'
 import { CarDetails } from '../screens/CarDetails'
 import { Scheduling } from '../screens/Scheduling'
 import { SchedulingDetails } from '../screens/SchedulingDetails'
@@ -22,16 +23,21 @@ export function StackRoutes() {
       />
 
       <Screen
+        name="SignIn"
+        component={SignIn}
+      />
+
+      <Screen
+        name="SignUpFirstStep"
+        component={SignUpFirstStep}
+      />
+
+      <Screen
         name="Home"
         component={Home}
         options={{
           gestureEnabled: false
         }}
-      />
-
-      <Screen
-        name="SignIn"
-        component={SignIn}
       />
 
       <Screen
