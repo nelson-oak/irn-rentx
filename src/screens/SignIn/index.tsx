@@ -22,11 +22,13 @@ import {
   Form,
   Footer,
 } from './styles'
+import { useAuth } from '../../hooks/auth'
 
 export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const { signIn } = useAuth()
   const navigation = useNavigation()
   const theme = useTheme()
 
@@ -44,7 +46,7 @@ export function SignIn() {
 
       await schema.validate({ email, password })
 
-      Alert.alert('Sucesso')
+      await signIn({ email, password })
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert('Opa', error.message)
