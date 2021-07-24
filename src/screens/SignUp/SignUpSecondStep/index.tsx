@@ -9,6 +9,7 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 
+import { api } from '../../../services/api'
 import { BackButton } from '../../../components/BackButton'
 import { Bullet } from '../../../components/Bullet'
 import { Button } from '../../../components/Button'
@@ -55,10 +56,20 @@ export function SignUpSecondStep() {
       return Alert.alert('Opa', 'Senhas não são iguais')
     }
 
-    navigation.navigate('Confirmation', {
-      title: 'Conta Criada!',
-      message: 'Agora é só fazer login \n e aproveitar.',
-      nextScreen: 'SignIn'
+    await api.post('/users', {
+      name: user.name,
+      email: user.email,
+      driver_license: user.driverLicense,
+      password,
+    }).then(() => {
+      navigation.navigate('Confirmation', {
+        title: 'Conta Criada!',
+        message: 'Agora é só fazer login \n e aproveitar.',
+        nextScreen: 'SignIn'
+      })
+    }).catch((error) => {
+      console.log(error)
+      return Alert.alert('Erro no cadastro', 'Ocorreu um erro ao fazer cadastro')
     })
   }
 
