@@ -46,6 +46,9 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     })
 
     const { token, user } = response.data
+    
+    api.defaults.headers.authorization = `Bearer ${token}`
+    
     setData({ token, user })
   }
 
