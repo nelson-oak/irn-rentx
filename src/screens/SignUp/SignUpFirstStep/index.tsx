@@ -104,6 +104,7 @@ export function SignUpFirstStep() {
             <Input
               iconName="user"
               placeholder="Nome"
+              autoCorrect={false}
               value={name}
               onChangeText={setName}
             />
@@ -112,6 +113,7 @@ export function SignUpFirstStep() {
               iconName="mail"
               placeholder="E-mail"
               keyboardType="email-address"
+              autoCorrect={false}
               value={email}
               onChangeText={setEmail}
             />

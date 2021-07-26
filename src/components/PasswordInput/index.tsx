@@ -63,6 +63,7 @@ export function PasswordInput({
             name={isPasswordVisible ? 'eye-off' : 'eye'}
             size={24}
             color={theme.colors.text_details}
+            autoCorrect={false}
           />
         </IconContainer>
       </BorderlessButton>
