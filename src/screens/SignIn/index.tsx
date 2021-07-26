@@ -24,9 +24,6 @@ import {
   Footer,
 } from './styles'
 
-import { database } from '../../database'
-import { useEffect } from 'react'
-
 export function SignIn() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -62,16 +59,6 @@ export function SignIn() {
   function handleNewAccout() {
     navigation.navigate('SignUpFirstStep')
   }
-
-  useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get('users')
-      const users = await userCollection.query().fetch()
-      console.log(users)
-    }
-
-    loadData()
-  }, [])
 
   return (
     <KeyboardAvoidingView
