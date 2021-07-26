@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
 
+import { useAuth } from '../../hooks/auth'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { PasswordInput } from '../../components/PasswordInput'
@@ -22,7 +23,9 @@ import {
   Form,
   Footer,
 } from './styles'
-import { useAuth } from '../../hooks/auth'
+
+import { database } from '../../database'
+import { useEffect } from 'react'
 
 export function SignIn() {
   const [email, setEmail] = useState('')
@@ -59,6 +62,16 @@ export function SignIn() {
   function handleNewAccout() {
     navigation.navigate('SignUpFirstStep')
   }
+
+  useEffect(() => {
+    async function loadData() {
+      const userCollection = database.get('users')
+      const users = await userCollection.query().fetch()
+      console.log(users)
+    }
+
+    loadData()
+  }, [])
 
   return (
     <KeyboardAvoidingView
