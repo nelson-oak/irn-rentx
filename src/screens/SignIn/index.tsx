@@ -98,7 +98,6 @@ export function SignIn() {
             <PasswordInput
               iconName="lock"
               placeholder="Senha"
-              autoCorrect={false}
               autoCapitalize="none"
               value={password}
               onChangeText={setPassword}
