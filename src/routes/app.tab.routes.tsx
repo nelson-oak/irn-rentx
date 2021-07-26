@@ -11,6 +11,7 @@ const { Navigator, Screen } = createBottomTabNavigator()
 
 import { AppStackRoutes } from './app.stack.routes'
 import { MyCars } from '../screens/MyCars'
+import { Profile } from '../screens/Profile'
 import { Platform } from 'react-native'
 
 export function AppTabRoutes() {
@@ -44,7 +45,7 @@ export function AppTabRoutes() {
       />
 
       <Screen
-        name="Profile"
+        name="MyCars"
         component={MyCars}
         options={{
           tabBarIcon: (({ color }) => (
@@ -58,8 +59,8 @@ export function AppTabRoutes() {
       />
 
       <Screen
-        name="MyCars"
-        component={MyCars}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarIcon: (({ color }) => (
             <PeopleSvg
