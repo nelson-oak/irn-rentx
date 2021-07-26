@@ -1,7 +1,11 @@
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import { BorderlessButton, RectButton } from 'react-native-gesture-handler'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { RFValue } from 'react-native-responsive-fontsize'
+
+interface IOptionProps {
+  active: boolean
+}
 
 export const Container = styled.View`
   flex: 1;
@@ -10,7 +14,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   width: 100%;
-  height: 227px;
+  height: ${RFValue(227)}px;
   background-color: ${({ theme }) => theme.colors.header};
   padding: 0 24px;
   align-items: center;
@@ -33,26 +37,55 @@ export const HeaderTitle = styled.Text`
 export const LogoutButton = styled(BorderlessButton)``
 
 export const PhotoContainer = styled.View`
-  width: 180px;
-  height: 180px;
-  border-radius: 90px;
+  width: ${RFValue(180)}px;
+  height: ${RFValue(180)}px;
+  border-radius: ${RFValue(90)}px;
   background-color: ${({ theme }) => theme.colors.shape};
   margin-top: 48px;
 `
 
 export const Photo = styled.Image`
-  width: 180px;
-  height: 180px;
-  border-radius: 90px;
+  width: ${RFValue(180)}px;
+  height: ${RFValue(180)}px;
+  border-radius: ${RFValue(90)}px;
 `
 
 export const PhotoButton = styled(RectButton)`
   background-color: ${({ theme }) => theme.colors.main};
-  width: 40px;
-  height: 40px;
+  width: ${RFValue(40)}px;
+  height: ${RFValue(40)}px;
   justify-content: center;
   align-items: center;
   position: absolute;
   bottom: 10px;
   right: 10px;
+`
+
+export const Content = styled.View`
+  flex: 1;
+  padding: 0 24px;
+  margin-top: ${RFValue(100)}px;
+`
+
+export const Options = styled.View`
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.colors.line};
+  flex-direction: row;
+  justify-content: space-around;
+
+  margin-bottom: ${RFValue(24)}px;
+`
+
+export const Option = styled.TouchableOpacity<IOptionProps>`
+  ${({ active }) => active && css`
+    border-bottom-width: 3px;
+    border-bottom-color: ${({ theme }) => theme.colors.main};
+  `};
+  padding: ${RFValue(14)}px;
+`
+
+export const OptionTitle = styled.Text<IOptionProps>`
+  font-family: ${({ theme, active }) => active ? theme.fonts.secondary_600 : theme.fonts.secondary_500};
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme, active }) => active ? theme.colors.header : theme.colors.text_details};
 `

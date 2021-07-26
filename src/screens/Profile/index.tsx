@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
 import { Feather } from '@expo/vector-icons'
@@ -13,10 +14,16 @@ import {
   LogoutButton,
   PhotoContainer,
   Photo,
-  PhotoButton
+  PhotoButton,
+  Content,
+  Options,
+  Option,
+  OptionTitle,
 } from './styles'
 
 export function Profile() {
+  const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
+
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -27,8 +34,13 @@ export function Profile() {
   function handleSignOut() {
   }
 
+  function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
+    setOption(selectedOption)
+  }
+
   return (
     <Container>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
       <Header>
         <HeaderTop>
           <BackButton color={theme.colors.shape} onPress={handleBack} />
@@ -44,6 +56,28 @@ export function Profile() {
           </PhotoButton>
         </PhotoContainer>
       </Header>
+
+      <Content>
+        <Options>
+          <Option
+            active={option === 'dataEdit'}
+            onPress={() => handleOptionChange('dataEdit')}
+          >
+            <OptionTitle active={option === 'dataEdit'}>
+              Dados
+            </OptionTitle>
+          </Option>
+          <Option
+            active={option === 'passwordEdit'}
+            onPress={() => handleOptionChange('passwordEdit')}
+          >
+            <OptionTitle active={option === 'passwordEdit'}>
+              Trocar
+              Senha
+            </OptionTitle>
+          </Option>
+        </Options>
+      </Content>
     </Container>
   )
 }
