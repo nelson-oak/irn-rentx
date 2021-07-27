@@ -2,8 +2,11 @@ import React, { useState, useEffect} from 'react'
 import { Alert, StatusBar } from 'react-native'
 import { useTheme } from 'styled-components'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNetInfo } from '@react-native-community/netinfo'
 import { format } from 'date-fns'
 import { Feather } from '@expo/vector-icons'
+
+import { useAuth } from '../../hooks/auth'
 
 import {
   Container,
@@ -29,6 +32,7 @@ import {
   RentalPriceDetails,
   RentalPriceQuota,
   RentalPriceTotal,
+  OfflineInfo
 } from './styles'
 
 import { api } from '../../services/api'
@@ -48,17 +52,23 @@ interface ISchedulingDetailsParams {
 }
 
 interface IRentalPeriod {
+  start: Date
   startFormatted: string
+  end: Date
   endFormatted: string
 }
 
 export function SchedulingDetails() {
+  const [updatedCar, setUpdatedCar] = useState<ICarDTO>({} as ICarDTO)
+
   const [loading, setLoading] = useState(false)
   const [rentalPeriod, setRentalPeriod] = useState<IRentalPeriod>({} as IRentalPeriod)
   
+  const { user } = useAuth()
   const theme = useTheme()
   const navigation = useNavigation()
   const route = useRoute()
+  const netInfo = useNetInfo()
 
   const { car, dates } = route.params as ISchedulingDetailsParams
   const rentTotal = dates.length * car.price
@@ -66,31 +76,20 @@ export function SchedulingDetails() {
   async function handleConfirmRental() {
     setLoading(true)
 
-    const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`)
-
-    const unavailable_dates = [
-      ...schedulesByCar.data.unavailable_dates,
-      ...dates,
-    ]
-
-    await api.post('/schedules_byuser/', {
-      user_id: 1,
-      car,
-      startDate: rentalPeriod.startFormatted,
-      endDate: rentalPeriod.endFormatted
-    })
-
-    api
-      .put(`/schedules_bycars/${car.id}`, {
-        id: car.id,
-        unavailable_dates
+    await api
+      .post('rentals', {
+        user_id: user.id,
+        car_id: car.id,
+        start_date: rentalPeriod.start,
+        end_date: rentalPeriod.end,
+        total: rentTotal
       })
       .then(() => navigation.navigate('Confirmation', {
         title: 'Carro Alugado!',
         message: 'Agora você só precisa ir \n até a concessionária da RENTX \n pegar seu automóvel.',
         nextScreen: 'Home'
       }))
-      .catch(() => {
+      .catch((error) => {
         Alert.alert('Não foi possível confirmar o agendamento')
         setLoading(false)
       })
@@ -102,10 +101,23 @@ export function SchedulingDetails() {
 
   useEffect(() => {
     setRentalPeriod({
+      start: getPlatformDate(new Date(dates[0])),
       startFormatted: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
+      end : getPlatformDate(new Date(dates[dates.length - 1])),
       endFormatted: format(getPlatformDate(new Date(dates[dates.length - 1])), 'dd/MM/yyyy'),
     })
   }, [])
+
+  useEffect(() => {
+    async function fetchUpdatedCar() {
+      const response = await api.get(`cars/${car.id}`)
+      setUpdatedCar(response.data)
+    }
+
+    if (netInfo.isConnected === true) {
+      fetchUpdatedCar()
+    }
+  }, [netInfo.isConnected])
 
   return (
     <Container>
@@ -120,9 +132,12 @@ export function SchedulingDetails() {
       </Header>
 
       <CarImages>
-        <ImageSlider imagesUrl={car.photos} />
-      </CarImages>
-
+        <ImageSlider imagesUrl={
+            updatedCar.photos ?
+            updatedCar.photos :
+            [{ id: car.thumbnail, photo: car.thumbnail }]
+          } />
+        </CarImages>
       <Content>
         <Details>
           <Description>
@@ -138,7 +153,7 @@ export function SchedulingDetails() {
 
         <Accessories>
           {
-            car.accessories.map(accessory => (
+            updatedCar.accessories && updatedCar.accessories.map(accessory => (
               <Accessory
                 key={accessory.type}
                 name={accessory.name}
@@ -180,9 +195,16 @@ export function SchedulingDetails() {
           title="Alugar agora"
           color={theme.colors.success}
           onPress={handleConfirmRental}
-          enabled={!loading}
+          enabled={netInfo.isConnected === true && !loading}
           loading={loading}
         />
+
+        {
+          netInfo.isConnected === false &&
+          <OfflineInfo>
+            Conecte-se a internet para ver mais detalhes e agendar seu carro
+          </OfflineInfo>
+        }
       </Footer>
     </Container>
   )
