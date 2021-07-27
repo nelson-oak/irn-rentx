@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import * as Yup from 'yup'
+import { useNetInfo } from '@react-native-community/netinfo'
 
 import { useAuth } from '../../hooks/auth'
 import { BackButton } from '../../components/BackButton'
@@ -32,6 +33,7 @@ import {
 
 export function Profile() {
   const { user, signOut, updateUser } = useAuth()
+  const netInfo = useNetInfo()
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
   const [avatar, setAvatar] = useState(user.avatar)
@@ -67,6 +69,10 @@ export function Profile() {
   }
 
   function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
+    if (netInfo.isConnected === false && selectedOption === 'passwordEdit') {
+      return Alert.alert('Você está Offline', 'Para mudar a senha, conecte-se a Internet')
+    }
+
     setOption(selectedOption)
   }
 
