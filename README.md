@@ -12,6 +12,9 @@ Versão Mobile do RentX, desenvolvida no bootcamp ignite - trilha react native
 | 4 | Calcular valor de acordo com a diária e o período |
 | 5 | Efetuar aluguel |
 | 6 | Listar carros alugados |
+| 7 | Cadastro de usuários |
+| 8 | Login |
+| 9 | Edição de dados do usuário |
 
 ## Recursos
 
