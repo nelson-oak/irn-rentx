@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { StatusBar, Button } from 'react-native'
+import { StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useNetInfo } from '@react-native-community/netinfo'
 import { synchronize } from '@nozbe/watermelondb/sync'
-import { Car as CarModel } from '../../database/models/Car'
 
 import Logo from '../../assets/logo.svg'
 
 import { database } from '../../database'
+import { Car as CarModel } from '../../database/models/Car'
 import { api } from '../../services/api'
 
 import { Car } from '../../components/Car'
@@ -54,7 +54,7 @@ export function Home() {
     let isMounted = true
 
     async function fetchCars() {
-      if (netInfo.isConnected) {
+      if (netInfo.isConnected === true) {
         await databaseSynchronize()
       }
 
