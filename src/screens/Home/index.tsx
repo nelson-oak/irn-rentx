@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
+import { useNetInfo } from '@react-native-community/netinfo'
 
 import Logo from '../../assets/logo.svg'
 
@@ -23,6 +24,7 @@ export function Home() {
   const [cars, setCars] = useState<ICarDTO[]>([])
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation()
+  const netInfo = useNetInfo()
 
   function handleSelectCar(car: ICarDTO) {
     navigation.navigate('CarDetails', { car })
@@ -57,6 +59,14 @@ export function Home() {
       isMounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (netInfo.isConnected) {
+      console.log('on')
+    } else {
+      console.log('off')
+    }
+  }, [netInfo.isConnected])
 
   return (
     <Container>
