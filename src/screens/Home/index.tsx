@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { StatusBar } from 'react-native'
+import { StatusBar, Button } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useNetInfo } from '@react-native-community/netinfo'
+import { synchronize } from '@nozbe/watermelondb/sync'
+import { Car as CarModel } from '../../database/models/Car'
 
 import Logo from '../../assets/logo.svg'
 
+import { database } from '../../database'
 import { api } from '../../services/api'
-import { ICarDTO } from '../../dtos/ICarDTO'
 
 import { Car } from '../../components/Car'
 import { LoadAnimation } from '../../components/LoadAnimation'
@@ -21,13 +23,31 @@ import {
 } from './styles'
 
 export function Home() {
-  const [cars, setCars] = useState<ICarDTO[]>([])
+  const [cars, setCars] = useState<CarModel[]>([])
   const [loading, setLoading] = useState(false)
   const navigation = useNavigation()
   const netInfo = useNetInfo()
 
-  function handleSelectCar(car: ICarDTO) {
+  function handleSelectCar(car: CarModel) {
     navigation.navigate('CarDetails', { car })
+  }
+
+  async function databaseSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const { data } = await api.get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+
+        const { changes, latestVersion } = data
+        return { changes, timestamp: latestVersion }
+      },
+      pushChanges: async ({ changes }) => {
+        const { users } = changes
+        if (users) {
+          await api.post('users/sync', users)
+        }
+      },
+    })
   }
 
   useEffect(() => {
@@ -39,10 +59,11 @@ export function Home() {
           setLoading(true)
         }
 
-        const response = await api.get('/cars')
+        const carCollection = database.get<CarModel>('cars')
+        const cars = await carCollection.query().fetch()
 
         if (isMounted) {
-          setCars(response.data)
+          setCars(cars)
         }
       } catch (error) {
         console.log(error)
@@ -59,14 +80,6 @@ export function Home() {
       isMounted = false
     }
   }, [])
-
-  useEffect(() => {
-    if (netInfo.isConnected) {
-      console.log('on')
-    } else {
-      console.log('off')
-    }
-  }, [netInfo.isConnected])
 
   return (
     <Container>
@@ -87,6 +100,7 @@ export function Home() {
           }
         </HeaderContent>
       </Header>
+      <Button title="Synchro" onPress={databaseSynchronize} />
 
       {
         loading
