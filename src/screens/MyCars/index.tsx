@@ -3,9 +3,17 @@ import { StatusBar, FlatList } from 'react-native'
 import { useTheme } from 'styled-components'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
+import { format, parseISO } from 'date-fns'
 
+import { Car as CarModel } from '../../database/models/Car'
 import { api } from '../../services/api'
-import { ICarByUserDTO } from '../../dtos/ICarByUserDTO'
+
+interface IRentalProps {
+  id: string
+  car: CarModel
+  start_date: string
+  end_date: string
+}
 
 import {
   Container,
@@ -28,7 +36,7 @@ import { Car } from '../../components/Car'
 import { LoadAnimation } from '../../components/LoadAnimation'
 
 export function MyCars() {
-  const [cars, setCars] = useState<ICarByUserDTO[]>([])
+  const [cars, setCars] = useState<IRentalProps[]>([])
   const [loading, setLoading] = useState(false)
 
   const theme = useTheme()
@@ -42,8 +50,18 @@ export function MyCars() {
     async function fetchCars() {
       try {
         setLoading(true)
-        const response = await api.get('/schedules_byuser?user_id=1')
-        setCars(response.data)
+        
+        const { data } = await api.get('rentals')
+        const formattedData = data.map((rental: IRentalProps) => {
+          return {
+            id: rental.id,
+            car: rental.car,
+            start_date: format(parseISO(rental.start_date), 'dd/MM/yyyy'),
+            end_date: format(parseISO(rental.end_date), 'dd/MM/yyyy')
+          }
+        })
+
+        setCars(formattedData)
       } catch (error) {
         console.log(error)
       } finally {
@@ -98,14 +116,14 @@ export function MyCars() {
                   <CarFooter>
                     <CarFooterTitle>Período</CarFooterTitle>
                     <CarFooterPeriod>
-                      <CarFooterDate>{item.startDate}</CarFooterDate>
+                      <CarFooterDate>{item.start_date}</CarFooterDate>
                       <AntDesign
                         name="arrowright"
                         size={20}
                         color={theme.colors.title}
                         style={{ marginHorizontal: 10 }}
                       />
-                      <CarFooterDate>{item.endDate}</CarFooterDate>
+                      <CarFooterDate>{item.end_date}</CarFooterDate>
                     </CarFooterPeriod>
                   </CarFooter>
                 </CarWrapper>
