@@ -54,6 +54,10 @@ export function Home() {
     let isMounted = true
 
     async function fetchCars() {
+      if (netInfo.isConnected) {
+        await databaseSynchronize()
+      }
+
       try {
         if (isMounted) {
           setLoading(true)
@@ -79,7 +83,7 @@ export function Home() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [netInfo.isConnected])
 
   return (
     <Container>
@@ -100,7 +104,6 @@ export function Home() {
           }
         </HeaderContent>
       </Header>
-      <Button title="Synchro" onPress={databaseSynchronize} />
 
       {
         loading
