@@ -27,6 +27,7 @@ interface  ISignInCredentials {
 
 interface IAuthContextData {
   user: IUser
+  isLoading: boolean
   signIn: (credentials: ISignInCredentials) => Promise<void>
   signOut: () => Promise<void>
   updateUser: (newUserData: IUser) => Promise<void>
@@ -40,6 +41,7 @@ const AuthContext = createContext<IAuthContextData>({} as IAuthContextData)
 
 export function AuthProvider({ children }: IAuthProviderProps) {
   const [user, setUser] = useState<IUser>({} as IUser)
+  const [isLoading, setIsLoading] = useState(true)
 
   async function signIn({ email, password }: ISignInCredentials) {
     try {
@@ -115,6 +117,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
         api.defaults.headers.authorization = `Bearer ${user.token}`
 
         setUser(userData)
+        setIsLoading(false)
       }
     }
 
@@ -124,6 +127,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   return (
     <AuthContext.Provider value={{
       user,
+      isLoading,
       signIn,
       signOut,
       updateUser
