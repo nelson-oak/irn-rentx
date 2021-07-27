@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Keyboard, KeyboardAvoidingView, StatusBar } from 'react-native'
+import { Alert, Keyboard, KeyboardAvoidingView, StatusBar } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import { useNavigation } from '@react-navigation/core'
 import { useTheme } from 'styled-components'
@@ -29,7 +29,7 @@ import { PasswordInput } from '../../components/PasswordInput'
 import { useAuth } from '../../hooks/auth'
 
 export function Profile() {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit')
   const [avatar, setAvatar] = useState(user.avatar)
@@ -43,7 +43,12 @@ export function Profile() {
     navigation.goBack()
   }
 
-  function handleSignOut() {
+  async function handleSignOut() {
+    try {
+      await signOut()
+    } catch {
+      Alert.alert('Erro ao fazer logout da aplcação')
+    }
   }
 
   function handleOptionChange(selectedOption: 'dataEdit' | 'passwordEdit') {
