@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StatusBar, FlatList } from 'react-native'
 import { useTheme } from 'styled-components'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused  } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons'
 import { format, parseISO } from 'date-fns'
 
@@ -38,6 +38,7 @@ import { LoadAnimation } from '../../components/LoadAnimation'
 export function MyCars() {
   const [cars, setCars] = useState<IRentalProps[]>([])
   const [loading, setLoading] = useState(false)
+  const isFocused = useIsFocused()
 
   const theme = useTheme()
   const navigation = useNavigation()
@@ -70,7 +71,7 @@ export function MyCars() {
     }
     
     fetchCars()
-  }, [])
+  }, [isFocused])
 
   return (
     <Container>
